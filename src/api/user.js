@@ -1,5 +1,5 @@
 import {createHeaders} from './index'
-const apiUrl = process.env.REACT_APP_API_KEY
+const apiUrl = process.env.REACT_APP_URL
 
 
 const checkForUser = async (username) => {
