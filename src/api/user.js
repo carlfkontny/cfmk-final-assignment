@@ -1,5 +1,5 @@
 import {createHeaders} from './index'
-const apiUrl = process.env.REACT_APP_URL
+const apiUrl = process.env.REACT_APP_API_URL
 
 
 const checkForUser = async (username) => {
@@ -12,7 +12,7 @@ const checkForUser = async (username) => {
         return [ null, data ]
     }
     catch (error) {
-        return [ error.message, []]
+        return [ error.message, [] ]
     }
 }
 
@@ -41,7 +41,7 @@ const createUser = async (username) => {
 }
 
 export const loginUser = async (username)  => {
-    const [ checkError, user ] = await checkForUser (username)
+    const [ error, user ] = await checkForUser (username)
     
     if (checkError !== null) {
         return [ checkError, null ]
@@ -50,6 +50,8 @@ export const loginUser = async (username)  => {
     if (user.length > 0) {
         return [ null, user.pop() ] //to not return the entire array json
     }
+
+    const [ createError, newUser ] = createUser (username)
 
     return await createUser(username)
     
