@@ -41,7 +41,7 @@ const createUser = async (username) => {
 }
 
 export const loginUser = async (username)  => {
-    const [ error, user ] = await checkForUser (username)
+    const [ checkError, user ] = await checkForUser (username)
     
     if (checkError !== null) {
         return [ checkError, null ]
@@ -51,9 +51,11 @@ export const loginUser = async (username)  => {
         return [ null, user.pop() ] //to not return the entire array json
     }
 
-    const [ createError, newUser ] = createUser (username)
+    // const [ createError, newUser ] = createUser (username)
 
     return await createUser(username)
     
 }
+
+
 
