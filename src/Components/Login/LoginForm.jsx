@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { loginUser } from '../../api/user'
 import { useState, useEffect } from 'react'
 import { storageSave } from '../../utils/storage'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../context/UserContext'
 
 const usernameConfig = {
@@ -17,6 +17,7 @@ const LoginForm = () => {
     
     const { register, handleSubmit, formState: { errors }} = useForm()
     const { user, setUser } = useUser()
+    const navigate = useNavigate()
 
     // Local state
     const [ loading, setLoading ] = useState(false)
@@ -24,11 +25,10 @@ const LoginForm = () => {
 
     // Side Effects
     useEffect(() => {
-        console.log('USer has changed!', user)
-
-
-        
-    }, [ user ]) 
+        if (user !== null) {
+            navigate('profile')
+        }
+    }, [ user, navigate ]) 
     // Event Handlers
     const onSubmit = async ({ username} ) => {
         setLoading(true)
