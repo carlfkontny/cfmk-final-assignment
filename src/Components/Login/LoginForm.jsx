@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { storageSave } from '../../utils/storage'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../context/UserContext'
+import { STORAGE_KEY_USER } from '../../const/storageKeys'
 
 const usernameConfig = {
     required: true,
@@ -37,7 +38,7 @@ const LoginForm = () => {
             setApiError(error)
         }
         if ( userResponse!== null) {
-            storageSave('coffee-user', userResponse)
+            storageSave(STORAGE_KEY_USER, userResponse)
             setUser(userResponse)
         }
         setLoading(false)
