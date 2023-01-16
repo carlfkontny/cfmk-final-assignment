@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { orderAdd } from "../api/order"
 import OrdersCoffeeButton from "../Components/Orders/OrdersCoffeeButton"
 import OrdersForm from "../Components/Orders/OrdersForm"
+import { useUser } from "../context/UserContext"
 import withAuth from "../hoc/withAuth"
 
 const COFFEES = [{
@@ -28,9 +30,27 @@ const COFFEES = [{
 const Orders = () => {
     
     const [ coffee, setCoffee ] = useState(null)
+    const { user } = useUser()
 
     const handleCoffeeClicked = (coffeeId) => {
         setCoffee(COFFEES.find(coffee => coffee.id === coffeeId))
+    }
+
+    const handleOrderClicked = async (notes) => {
+        //check if we have coffee
+        if (!coffee) {
+            alert('Please select a coffee first!')
+            return
+        }
+              
+        //combine order with notes
+        const order = (coffee.name + ' ' + notes).trim()//trims away the empty space before and after so removes space at the end if notes is empty. 
+        
+        //send http request
+        const [ error, result ] = await orderAdd(user, order)
+        console.log('Error', error)
+        console.log('Result', result)
+        // be happy
     }
 
 
@@ -48,7 +68,7 @@ const Orders = () => {
                 {availableCoffees}
             </section>
             <section id="order-notes">
-                <OrdersForm />
+                <OrdersForm onOrder={ handleOrderClicked }/>
             </section>
             { coffee && <p>Summary: { coffee.name } </p>}
         </>
