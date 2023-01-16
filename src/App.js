@@ -7,6 +7,7 @@ import {
 import Login from './Views/Login';
 import Orders from './Views/Orders';
 import Profile from './Views/Profile';
+import Navbar from './Components/Navbar/Navbar';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <Navbar/>
         <Routes>
           <Route path="/" element={ <Login/>}/>
           <Route path="/orders" element={ <Orders/>}/>
