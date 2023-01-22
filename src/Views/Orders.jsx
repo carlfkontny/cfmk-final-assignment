@@ -2,8 +2,10 @@ import { useState } from "react"
 import { orderAdd } from "../api/order"
 import OrdersCoffeeButton from "../Components/Orders/OrdersCoffeeButton"
 import OrdersForm from "../Components/Orders/OrdersForm"
+import { STORAGE_KEY_USER } from "../const/storageKeys"
 import { useUser } from "../context/UserContext"
 import withAuth from "../hoc/withAuth"
+import { storageSave } from "../utils/storage"
 
 const COFFEES = [{
     id: 1,
@@ -30,7 +32,7 @@ const COFFEES = [{
 const Orders = () => {
     
     const [ coffee, setCoffee ] = useState(null)
-    const { user } = useUser()
+    const { user, setUser } = useUser()
 
     const handleCoffeeClicked = (coffeeId) => {
         setCoffee(COFFEES.find(coffee => coffee.id === coffeeId))
@@ -48,8 +50,16 @@ const Orders = () => {
         
         //send http request
         const [ error, result ] = await orderAdd(user, order)
+        if (error !== null) {
+            //that's bad
+            return 
+        }
+        // Keep UI state and server state in sync
+        storageSave(STORAGE_KEY_USER, updatedUser)
+        //Update context state
+        setUser(updatedUser)
         console.log('Error', error)
-        console.log('Result', result)
+        console.log('updatedUser', updatedUser)
         // be happy
     }
 

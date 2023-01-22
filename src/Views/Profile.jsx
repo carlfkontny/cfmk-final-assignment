@@ -19,7 +19,7 @@ const Profile = () => {
                 setUser(latestUser)
             }
         }
-        findUser()
+        //findUser()
     }, [ setUser, user.id ])
     return (
         <>
